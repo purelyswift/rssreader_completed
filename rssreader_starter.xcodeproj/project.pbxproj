@@ -12,6 +12,7 @@
 		C79A821F1C6FE48C00DBA01B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79A821E1C6FE48C00DBA01B /* Assets.xcassets */; };
 		C79A82221C6FE48C00DBA01B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C79A82201C6FE48C00DBA01B /* LaunchScreen.storyboard */; };
 		C79A822A1C6FE4CD00DBA01B /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A82291C6FE4CD00DBA01B /* Cells.swift */; };
+		C79A82301C702DAF00DBA01B /* FeedDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A822F1C702DAF00DBA01B /* FeedDetailController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		C79A82211C6FE48C00DBA01B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C79A82231C6FE48C00DBA01B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C79A82291C6FE4CD00DBA01B /* Cells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cells.swift; sourceTree = "<group>"; };
+		C79A822F1C702DAF00DBA01B /* FeedDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedDetailController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				C79A82201C6FE48C00DBA01B /* LaunchScreen.storyboard */,
 				C79A82231C6FE48C00DBA01B /* Info.plist */,
 				C79A82291C6FE4CD00DBA01B /* Cells.swift */,
+				C79A822F1C702DAF00DBA01B /* FeedDetailController.swift */,
 			);
 			path = rssreader_starter;
 			sourceTree = "<group>";
@@ -134,6 +137,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C79A82301C702DAF00DBA01B /* FeedDetailController.swift in Sources */,
 				C79A821A1C6FE48C00DBA01B /* SearchFeedController.swift in Sources */,
 				C79A822A1C6FE4CD00DBA01B /* Cells.swift in Sources */,
 				C79A82181C6FE48C00DBA01B /* AppDelegate.swift in Sources */,

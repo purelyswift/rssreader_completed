@@ -32,11 +32,45 @@ class SearchFeedController: UICollectionViewController {
         if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.minimumLineSpacing = 0
             layout.headerReferenceSize = CGSizeMake(view.frame.width, 50)
+            layout.estimatedItemSize = CGSizeMake(view.frame.width, 100)
         }
     }
     
     func performSearchForText(text: String) {
         print("Performing search for \(text), please wait...")
+        
+        let urlString = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=\(text)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        let url = NSURL(string: urlString)
+        NSURLSession.sharedSession().dataTaskWithURL(url!) { (data, response, error) -> Void in
+            if error != nil {
+                print(error)
+                return
+            }
+            
+            do {
+                let json = try(NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()))
+                
+                let responseData = json["responseData"] as? NSDictionary
+                
+                if let entryDictionaries = responseData?["entries"] as? [NSDictionary] {
+                    self.entries = [Entry]()
+                    for entryDictionary in entryDictionaries {
+                        let title = entryDictionary["title"] as? String
+                        let contentSnippet = entryDictionary["contentSnippet"] as? String
+                        let url = entryDictionary["url"] as? String
+                        self.entries?.append(Entry(title: title, contentSnippet: contentSnippet, url: url))
+                    }
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.collectionView?.reloadData()
+                })
+                
+            } catch let error {
+                print(error)
+            }
+            
+        }.resume()
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -50,7 +84,16 @@ class SearchFeedController: UICollectionViewController {
         let entryCell = collectionView.dequeueReusableCellWithReuseIdentifier(entryCellId, forIndexPath: indexPath) as! EntryCell
         let entry = entries?[indexPath.item]
         entryCell.titleLabel.text = entry?.title
-        entryCell.contentSnippetTextView.text = entry?.contentSnippet
+        
+        let data = entry?.contentSnippet?.dataUsingEncoding(NSUnicodeStringEncoding)
+        let options = [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]
+        do {
+            let htmlText = try(NSAttributedString(data: data!, options: options, documentAttributes: nil))
+            entryCell.contentSnippetTextView.attributedText = htmlText
+        } catch let error {
+            print(error)
+        }
+        
         return entryCell
     }
     
@@ -64,6 +107,12 @@ class SearchFeedController: UICollectionViewController {
         return CGSizeMake(view.frame.width, 80)
     }
     
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let controller = FeedDetailController(collectionViewLayout: UICollectionViewFlowLayout())
+        controller.entryUrl = entries?[indexPath.item].url
+        navigationController?.pushViewController(controller, animated: true)
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+    }
 }
 
 struct Entry {
